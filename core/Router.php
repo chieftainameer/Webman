@@ -8,10 +8,10 @@ class Router
     protected $routes = [];
     private Response $response;
 
-    public function __construct($request)
+    public function __construct($request,$response)
     {
         $this->request = $request;
-        $this->response = new Response();
+        $this->response = $response;
     }
 
     public function get($path,$callback)
@@ -26,7 +26,8 @@ class Router
         $callback = $this->routes[$method][$path] ?? false;
         if ($callback === false)
         {
-            $this->response->seetStatucCode(404);
+//            $this->response->seetStatucCode(404); // both are valid ways to access Response class
+            Application::$APP->response->seetStatucCode(404);
             return "Route Not Found";
         }
         if (is_string($callback))
