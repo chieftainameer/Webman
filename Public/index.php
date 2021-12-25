@@ -13,6 +13,8 @@ $app->router->get('/',function(){
 $app->router->get('/ameer',function(){
     return "hello ameer hamza";
 });
-;
+$app->router->get('/home','Home');
+$app->router->get('/contact','Contact');
+
 $app->run();
 

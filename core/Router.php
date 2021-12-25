@@ -6,10 +6,12 @@ class Router
 {
     private Request $request;
     protected $routes = [];
+    private Response $response;
 
     public function __construct($request)
     {
         $this->request = $request;
+        $this->response = new Response();
     }
 
     public function get($path,$callback)
@@ -24,14 +26,37 @@ class Router
         $callback = $this->routes[$method][$path] ?? false;
         if ($callback === false)
         {
-            echo "Route Not Found";
-            exit;
+            $this->response->seetStatucCode(404);
+            return "Route Not Found";
         }
-        echo call_user_func($callback);
+        if (is_string($callback))
+        {
+            return $this->renderView($callback);
+        }
+        else
+        {
+            return call_user_func($callback);
+        }
+    }
 
-        echo '<pre>';
-        var_dump($this->routes);
-        echo '</pre>';
-        exit;
+    public function renderView($view){
+        $extendedView = $this->extendedView($view);
+        $layoutView = $this->layoutView();
+        $mainView = str_replace('{{content}}',$extendedView,$layoutView);
+        return $mainView;
+    }
+
+    protected function extendedView($view)
+    {
+        ob_start();
+        include_once Application::$ROOT_PATH."/Views/$view.php";
+        return ob_get_clean();
+    }
+
+    protected function layoutView()
+    {
+        ob_start();
+        include_once Application::$ROOT_PATH."/Views/layouts/main.php";
+        return ob_get_clean();
     }
 }
