@@ -19,6 +19,11 @@ class Router
         $this->routes['get'][$path] = $callback;
     }
 
+    public function post($path,$callback)
+    {
+        $this->routes['post'][$path] = $callback;
+    }
+
     public function resolve()
     {
         $path = $this->request->getPath();
@@ -26,9 +31,9 @@ class Router
         $callback = $this->routes[$method][$path] ?? false;
         if ($callback === false)
         {
-//            $this->response->seetStatucCode(404); // both are valid ways to access Response class
-            Application::$APP->response->seetStatucCode(404);
-            return "Route Not Found";
+//            $this->response->setStatucCode(404); // both are valid ways to access Response class
+            Application::$APP->response->setStatucCode(404);
+            return $this->renderContent('Page Not Found');
         }
         if (is_string($callback))
         {
@@ -38,6 +43,11 @@ class Router
         {
             return call_user_func($callback);
         }
+    }
+
+    public function renderContent($content){
+        $layout = $this->layoutView();
+        return str_replace('{{content}}','Page Not Found',$layout);
     }
 
     public function renderView($view){

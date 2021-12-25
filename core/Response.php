@@ -4,7 +4,7 @@ namespace app\core;
 
 class Response
 {
-    public function seetStatucCode($code)
+    public function setStatucCode($code)
     {
         http_response_code($code);
     }

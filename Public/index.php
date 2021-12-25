@@ -15,6 +15,9 @@ $app->router->get('/ameer',function(){
 });
 $app->router->get('/home','Home');
 $app->router->get('/contact','Contact');
+$app->router->post('/contact',function(){
+    return "Handling form data";
+});
 
 $app->run();
 
