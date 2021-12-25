@@ -37,15 +37,17 @@ class Router
         }
         if (is_string($callback))
         {
+            // if this is a string then we are passing a name of a view..so render it
             return $this->renderView($callback);
         }
         else
         {
+            // if the passed value os not a view then it is a callback function which should be executed righti way
             return call_user_func($callback);
         }
     }
 
-    public function renderView($view,$viewTypeError){
+    public function renderView($view,$viewTypeError=false){
         $extendedView = $this->extendedView($view,$viewTypeError);
         $layoutView = $this->layoutView();
         $mainView = str_replace('{{content}}',$extendedView,$layoutView);
