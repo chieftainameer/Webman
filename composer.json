@@ -1,0 +1,16 @@
+{
+    "name": "hassan/webman",
+    "autoload": {
+        "psr-4": {
+            "Hassan\\Webman\\": "src/",
+            "app\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ameer Hamza",
+            "email": "ameer@notwebdesign.com"
+        }
+    ],
+    "require": {}
+}
