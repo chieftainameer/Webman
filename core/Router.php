@@ -33,7 +33,7 @@ class Router
         {
 //            $this->response->setStatucCode(404); // both are valid ways to access Response class
             Application::$APP->response->setStatucCode(404);
-            return $this->renderContent('Page Not Found');
+            return $this->renderView('_404',true);
         }
         if (is_string($callback))
         {
@@ -45,22 +45,18 @@ class Router
         }
     }
 
-    public function renderContent($content){
-        $layout = $this->layoutView();
-        return str_replace('{{content}}','Page Not Found',$layout);
-    }
-
-    public function renderView($view){
-        $extendedView = $this->extendedView($view);
+    public function renderView($view,$viewTypeError){
+        $extendedView = $this->extendedView($view,$viewTypeError);
         $layoutView = $this->layoutView();
         $mainView = str_replace('{{content}}',$extendedView,$layoutView);
         return $mainView;
     }
 
-    protected function extendedView($view)
+    protected function extendedView($view,$viewTypeError=false)
     {
+        $path = $viewTypeError ? Application::$ROOT_PATH."/Views/errors/" : Application::$ROOT_PATH."/Views/";
         ob_start();
-        include_once Application::$ROOT_PATH."/Views/$view.php";
+        include_once $path.$view.".php";
         return ob_get_clean();
     }
 
